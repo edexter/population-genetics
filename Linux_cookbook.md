@@ -1,16 +1,10 @@
 # Linux Cookbook for Bioinformatics
 
-A quick reference guide for essential Linux commands you'll need in this course.
+A quick reference guide for essential Linux commands you'll need in this course. Commands are organized by complexity and frequency of use:
 
----
-
-## How to Use This Guide
-
-Commands are organized by complexity and frequency of use:
-
-- **Basic Commands** - You will use these constantly. Memorize them. Looking these up frequently will significantly slow down your bioinformatics work.
-- **Intermediate Commands** - You will use these regularly and will naturally memorize the ones you use often. You'll occasionally need to check this reference for exact syntax.
-- **Advanced Commands** - These involve complex syntax that you'll need to carefully construct with help from references. As long as you know these commands exist, when to use them, and where to look up how to construct them, you're fine.
+- **Basic Commands** - You will use these constantly. **Memorize these ASAP because** stopping to look them up frequently will significantly slow down your bioinformatics work. You will need to write out basic linux commands by memory for the final examination.
+- **Intermediate Commands** - You will use some of these regularly, but you will not be required to memorize them for the course. As long as you know these commands exist, when to use them, and where to look up how to construct them, you're fine.
+- **Advanced Commands** - These involve complex syntax that you'll need to carefully construct with help from a reference document. Just be aware that they exist and are available to you.
 
 ---
 
