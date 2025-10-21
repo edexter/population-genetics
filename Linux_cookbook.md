@@ -38,11 +38,11 @@ A quick reference guide for essential Linux commands you'll need in this course.
 
 ### What is Linux and why do we use it?
 
-Linux is a Unix-based operating system that dominates scientific computing and bioinformatics. Most bioinformatics tools are designed for Linux, high-performance computing clusters run Linux, and the command-line interface provides powerful tools for processing large datasets efficiently.
+Linux is a Unix-based operating system that dominates scientific computing and bioinformatics. Most bioinformatics tools are designed for Linux, high-performance computing clusters run Linux, and the command-line interface provides powerful tools for processing large datasets efficiently. Learning to use linux well is the single most effective way to make your bioinformatis work easier, faster, and more reliable.
 
 ### Installing and configuring Linux on your local machine
 
-**For practice during this course:**
+**For practice during the first 1-2 classes:**
 - Use [JSLinux](https://bellard.org/jslinux/) in your browser (no installation needed)
 
 **For your own computer:**
@@ -54,31 +54,28 @@ Linux is a Unix-based operating system that dominates scientific computing and b
 
 ## Basic Commands
 
-### Navigating directories (cd)
+Understanding your location (pwd)
+Linux uses the concept of a "working directory" - this is your current location in the file system. Whenever you read or write a file without specifying a full path, Linux assumes you mean a file in your working directory. For example, if you have a file called results.txt in your working directory and you open results.txt, the system knows you mean the one in your current location, not a different results.txt stored somewhere else on the system.
+Syntax:
+bashpwd                             # Print working directory
+Example:
+bashpwd
+# Output: /home/username/projects/analysis
+# This means any file you reference without a path will be looked for here
 
-Change your current working directory.
-
-**Syntax:**
-```bash
-cd [directory_path]
-```
-
-**Examples:**
-```bash
-cd /home/username/data          # Go to absolute path
+Navigating directories (cd)
+Change your current working directory to move around the file system.
+Syntax:
+bashcd [directory_path]
+Examples:
+bashcd /home/username/data          # Go to absolute path
 cd projects                     # Go to subdirectory in current location
 cd ..                           # Go up one directory level
 cd ../..                        # Go up two directory levels
 cd ~                            # Go to your home directory
 cd -                            # Go back to previous directory
-```
 
-**Related command:**
-```bash
-pwd                             # Print working directory (show where you are)
-```
-
----
+Listing and creating directories (ls, mkdir)
 
 ### Listing and creating directories (ls, mkdir)
 
@@ -583,3 +580,9 @@ screen -r mapping                       # Reattach to see progress
 | Delete file | `rm [file]` |
 | Delete directory | `rm -r [directory]` |
 | Get help | `man [command]` or `[command] --help` |
+
+# Misc notes
+* Linux is case sensitive. You can have a file named "results.txt" and "Results.txt" in the same folder. I prefer to avoid capital letters in file and directory names unless I have a very specific reason to use them. Whatever approach you take, just be consistent.
+* Never use spaces in file or directory names. Always use the underscore character _ instead. Example: "my_project" instead of "my project". You can also use dashes in place of a space, but this is less good because there are multiple types of dashes that look almost identical on the screen.
+* Need to explain the difference between absolute paths and relative paths
+* Need to explain what flags are in linux commands (examples -r for folder operations, ls -lh showing flag combination syntax)
