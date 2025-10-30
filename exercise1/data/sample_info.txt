@@ -1,0 +1,27 @@
+Sample Information for Exercise 1
+================================
+
+Sample ID: SRR11816069
+Project: PRJNA633966 (Identification of STEC in Belgium)
+Organism: Escherichia coli (Shiga toxin-producing E. coli)
+Source: From Sciensano STEC reference collection
+
+Original Data:
+- Total reads: 761,267 paired-end reads
+- Read length: 150 bp
+- Original file size: ~94 MB (R1) + ~118 MB (R2)
+
+Downsampled for Teaching:
+- Downsampled reads: 100,000 paired-end reads
+- Coverage: ~6-7x for E. coli K-12 genome
+- File size: ~13 MB (R1) + ~16 MB (R2)
+- Random seed: 100 (for reproducibility)
+
+Files:
+- sample_R1.fastq.gz (forward reads)
+- sample_R2.fastq.gz (reverse reads)
+
+Reference Genome:
+- E. coli K-12 MG1655
+- Size: ~4.6 Mb
+- Located in: ../genomes/ecoli_K12_MG1655.fasta

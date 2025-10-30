@@ -1,0 +1,86 @@
+Introduction (5 min)
+
+Why measure genetic diversity? (Evolution, conservation, health)
+Overview of what we'll calculate today
+Introduce the example dataset: 5 sequences, 10 bases aligned
+
+1. Number of Segregating Sites (S) (10 min)
+
+Definition: Count of polymorphic (variable) positions in the alignment
+Hand calculation:
+
+Show the 5×10 alignment
+Identify which sites are variable
+Count them
+
+
+Interpretation: Raw measure of variation, sample-size dependent
+Typical values: Depends on organism, region, sample size
+
+2. Nucleotide Diversity (π) (15 min)
+
+Definition: Average pairwise differences per site between sequences
+Formula: π = (sum of pairwise differences) / (number of comparisons × sequence length)
+Hand calculation:
+
+Calculate all pairwise comparisons (5 choose 2 = 10 pairs)
+Count differences for each pair
+Sum and divide by (10 pairs × 10 sites)
+
+
+Interpretation: Per-site diversity, accounts for allele frequencies
+Typical values: Often 0.001-0.01 in many organisms
+
+3. Heterozygosity (He) (15 min)
+
+Definition: Expected heterozygosity (gene diversity) at each site
+Formula: He = 1 - Σ(pi²), where pi = frequency of allele i
+Hand calculation:
+
+For each variable site, calculate allele frequencies
+Apply formula
+Average across all sites (or just variable sites)
+
+
+Interpretation: Probability two random alleles differ
+Connection: Related to π but calculated per-site then averaged
+
+4. Watterson's Theta (θw) (12 min)
+
+Definition: Estimate of population mutation parameter based on S
+Formula: θw = S / an, where an = Σ(1/i) for i=1 to n-1 (harmonic number)
+Why we need it: Corrects for sample size bias in S
+Hand calculation:
+
+Calculate harmonic number for n=5: an = 1 + 1/2 + 1/3 + 1/4
+Divide S by an
+
+
+Interpretation: Another estimator of θ = 4Neμ
+Typical values: Similar scale to π
+
+5. Relationships Between Statistics (8 min)
+
+Compare π vs θw:
+
+Both estimate θ = 4Neμ
+π weights by allele frequency; θw treats all mutations equally
+When π > θw: excess of intermediate-frequency variants
+When π < θw: excess of rare variants
+
+
+Mention Tajima's D (conceptually only):
+
+Standardized difference between π and θw
+Indicator of selection or demographic history
+Don't calculate, but understand what difference means
+
+
+Connect to He: Related to π, both frequency-weighted
+
+Summary (5 min)
+
+Recap: Four main statistics and what they measure
+When to use which statistic
+Preview of practical: calculating these on real data with bioinformatic tools
+Key takeaway: Different statistics capture different aspects of diversity
