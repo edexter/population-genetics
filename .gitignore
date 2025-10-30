@@ -1,7 +1,7 @@
 # Claude Code
 .claude/
 *.claude.md
-*.CLAUDE.md
+CLAUDE.md
 
 # Editor directories and files
 .vscode/
