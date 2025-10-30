@@ -18,7 +18,7 @@ In the lecture, we learned about several statistics for measuring genetic divers
 - **S**: Number of segregating (polymorphic) sites - the simplest measure of variation
 - **π (pi)**: Nucleotide diversity - average pairwise differences between sequences
 
-We'll be working with a VCF (Variant Call Format) file containing SNP data from multiple samples of the bacterium *Pasteuria ramosa* collected from the wild.
+We'll be working with a VCF (Variant Call Format) file containing SNP data from multiple samples of the bacterium *Pasteuria ramosa* collected from a pond population.
 
 **Note about our organism:** *Pasteuria ramosa* is a haploid bacterium, meaning each cell has only one copy of each gene. When we calculate diversity statistics, we're measuring variation across the population, not within individuals.
 
@@ -29,7 +29,8 @@ We'll be working with a VCF (Variant Call Format) file containing SNP data from 
 ### 1.1 Check Required Software
 
 Before we begin, we need to ensure you have the necessary bioinformatics tool installed. We'll be using:
-- **vcftools**: For VCF filtering and calculating diversity statistics
+- **vcftools**: For VCF filtering and calculating diversity statistics (required)
+- **bcftools**: Optional tool with sometimes more convenient features for VCF manipulation
 
 #### Check if vcftools is installed:
 
@@ -59,6 +60,27 @@ Check with your system administrator or use module commands:
 ```bash
 module avail vcftools
 module load vcftools
+```
+
+#### Optional: Install bcftools
+
+Throughout this tutorial, we'll show alternative commands using bcftools where applicable. While not required, bcftools can sometimes offer more concise syntax for certain operations.
+
+**Installation (same as vcftools):**
+
+**On Ubuntu/Debian Linux:**
+```bash
+sudo apt-get install bcftools
+```
+
+**On macOS with Homebrew:**
+```bash
+brew install bcftools
+```
+
+**On a computing cluster:**
+```bash
+module load bcftools
 ```
 
 ---
@@ -116,17 +138,14 @@ The VCF file contains variant information for multiple *Pasteuria ramosa* sample
 # Make sure you're in the project directory
 cd ~/genetic_diversity
 
-# Download the VCF file to the data directory
-# (Replace with actual URL or copy command)
-cp /path/to/pasteuria_population.vcf data/
+# Download the VCF file from GitHub using wget
+wget -O data/pasteuria_population.vcf https://raw.githubusercontent.com/edexter/population-genetics/main/genetic_diversity/data/pasteuria_population.vcf
 
-# Alternatively, if downloading from a server:
-# wget -O data/pasteuria_population.vcf [URL]
-# or
-# curl -o data/pasteuria_population.vcf [URL]
+# Alternative: Download using curl
+# curl -o data/pasteuria_population.vcf https://raw.githubusercontent.com/edexter/population-genetics/main/genetic_diversity/data/pasteuria_population.vcf
 ```
 
-**Note to instructor:** Provide the actual path or URL for students to access the file.
+**Note:** We're downloading the raw file from GitHub, which is why we use the `raw.githubusercontent.com` URL.
 
 ---
 
@@ -222,6 +241,14 @@ mv data/pasteuria_population_filtered.recode.vcf data/pasteuria_population_filte
 - `--recode --recode-INFO-all`: Creates a new VCF file with all INFO fields preserved
 - `--out`: Specifies the output file prefix
 
+**Alternative: Using bcftools (more concise)**
+
+```bash
+# Filter with bcftools
+bcftools view -v snps -m2 -M2 data/pasteuria_population.vcf -o data/pasteuria_population_filtered.vcf
+
+# Options: -v snps (SNPs only), -m2 -M2 (min/max 2 alleles)
+```
 
 **Verify the filtering:**
 
@@ -401,53 +428,6 @@ Create your own summary table:
 
 ---
 
-### 5.2 Interpret Your Results
-
-**Questions to consider:**
-
-1. **How diverse is this *Pasteuria* population?**
-   - Compare your π value to typical values (humans ~0.001, Drosophila ~0.01)
-   - Is this high or low diversity for a bacterial population?
-
-2. **What is the relationship between S and π?**
-   - S tells us how many variable sites exist
-   - π tells us the average difference, weighted by allele frequency
-   - If you have many rare variants, S will be larger relative to π
-   - If you have balanced allele frequencies, π will be larger relative to S
-
-3. **What might explain the diversity patterns?**
-   - High diversity: Large population size, high mutation rate, balancing selection
-   - Low diversity: Small population, recent bottleneck, selective sweep
-   - Variable diversity across genome: Selection acting on specific regions
-
----
-
-### 5.3 Calculate Tajima's D (Optional Advanced)
-
-Tajima's D compares observed diversity (π) to expected diversity under neutrality. It helps detect deviations from neutral evolution.
-
-```bash
-# VCFtools can calculate Tajima's D
-vcftools --vcf data/pasteuria_population_filtered.vcf \
-  --TajimaD 10000 \
-  --out results/pasteuria_tajima
-
-# View the results
-head results/pasteuria_tajima.Tajima.D
-```
-
-**Interpretation:**
-- **D = 0**: Consistent with neutral evolution and constant population size
-- **D > 0**: Excess of intermediate-frequency variants (balancing selection, bottleneck)
-- **D < 0**: Excess of rare variants (population expansion, selective sweep)
-
-**Look at your Tajima's D values:**
-- Are they mostly positive, negative, or around zero?
-- Do different genomic regions show different patterns?
-- What might this tell you about the population's evolutionary history?
-
----
-
 ## Section 6: Reflection and Discussion
 
 ### Discussion Questions
@@ -465,41 +445,27 @@ head results/pasteuria_tajima.Tajima.D
 3. **Methodological considerations:**
    - What assumptions does π make about the data?
    - What potential biases might exist in the VCF data (sequencing errors, missing data)?
-   - Why did we filter out indels and multiallelic sites?
+   - Why did we filter out indels and multiallelic sites? Was it really necessary for the statistics we calculated?
 
 ---
 
 ## Section 7: Clean Up and Organize
 
-Good practice is to document your analysis and clean up temporary files:
+Good practice is to document your analysis and organize your results:
 
 ```bash
-# Create a README in your results directory
-cat > results/README.txt << 'EOF'
-Genetic Diversity Analysis Results
-===================================
-
-Dataset: Pasteuria ramosa population VCF
-Analysis date: [DATE]
-Analyst: [YOUR NAME]
-
-Files:
-- diversity_statistics.txt: Main results (S and pi)
-- sample_names.txt: List of samples analyzed
-- pasteuria_pi.windowed.pi: Nucleotide diversity results
-- pasteuria_pi_10kb.windowed.pi: Windowed diversity (if calculated)
-- pasteuria_tajima.Tajima.D: Tajima's D values (if calculated)
-
-Analysis scripts used:
-- See commands in Practical_exercise_calculating_genetic_diversity.md
-EOF
-
-# Remove temporary files in scratch (if any)
-rm -f scratch/*
-
-# Create a final organized results summary
+# View all result files
 ls -lh results/
+
+# Remove any temporary files
+rm -f scratch/*
 ```
+
+**Your results directory should contain:**
+- `diversity_statistics.txt` - Summary of S and π values
+- `sample_names.txt` - List of samples analyzed
+- `pasteuria_pi.windowed.pi` - Genome-wide π calculation
+- `pasteuria_pi_10kb.windowed.pi` - Windowed π values (if you ran the optional section)
 
 ---
 
@@ -511,10 +477,6 @@ ls -lh results/
 - **VCFtools Documentation**: https://vcftools.github.io/
 - **VCFtools Manual**: Run `man vcftools` in the terminal
 
-### Key Papers
-
-- Tajima, F. (1989). Statistical method for testing the neutral mutation hypothesis by DNA polymorphism. *Genetics*.
-- Watterson, G.A. (1975). On the number of segregating sites in genetical models without recombination. *Theoretical Population Biology*.
 
 ### Commands Summary
 
@@ -532,14 +494,11 @@ vcftools --vcf data/file.vcf \
 vcftools --vcf data/file.vcf
 # Or: grep -v "^#" data/file.vcf | wc -l
 
-# 3. Calculate pi genome-wide
+# 3. Calculate pi genome-wide (assuming genome is less than 10 MB)
 vcftools --vcf data/file.vcf --window-pi 10000000 --out results/pi
 
 # 4. Calculate pi in sliding windows
 vcftools --vcf data/file.vcf --window-pi 10000 --out results/pi_windows
-
-# 5. Calculate Tajima's D
-vcftools --vcf data/file.vcf --TajimaD 10000 --out results/tajima
 ```
 
 ---
@@ -554,13 +513,10 @@ To check your understanding:
 2. **If you sampled 5 individuals instead of 20, would you expect S to increase or decrease? What about π?**
    - Consider which statistic is more affected by sample size
 
-3. **What does a negative Tajima's D value suggest about the population?**
-   - What does it mean if there are many rare variants?
-
-4. **Why might different regions of the genome show different levels of diversity?**
+3. **Why might different regions of the genome show different levels of diversity?**
    - Think about selection, recombination, mutation rate
 
-5. **Looking at your results, would you say this *Pasteuria* population has high or low genetic diversity?**
+4. **Looking at your results, would you say this *Pasteuria* population has high or low genetic diversity?**
    - What factors might influence diversity in a bacterial population?
 
 ---
@@ -593,38 +549,27 @@ Load all of your windowed π results into R and create a single publication-qual
 - **X-axis**: Genomic position (in bp or kb)
 - **Y-axis**: Nucleotide diversity (π)
 - **Multiple lines**: One line for each window size, each in a different color
-- **Legend**: Clearly indicating which color corresponds to which window size
+- **Line styles**:
+  - Your preferred/optimal window size should be plotted as a **solid line**
+  - All other window sizes should be plotted as **dashed lines**
+- **Legend**: Clearly showing which color corresponds to which window size
 - **Axis labels**: Properly labeled with units
 - **Title**: Descriptive title
 
-**Part 3: Analysis and Interpretation**
-
-Write a brief analysis (1-2 paragraphs) addressing the following questions:
-
-1. **How does window size affect the π estimates?**
-   - What happens to the estimates as windows get larger or smaller?
-   - How does variability (noise) change with window size?
-
-2. **Is there an optimal window size for this dataset?**
-   - What does "optimal" mean in this context?
-   - Consider the trade-off between resolution and statistical noise
-   - What biological features or patterns become visible at different scales?
-
-3. **What does this tell you about the genome?**
-   - Are there regions of consistently high or low diversity?
-   - Do different window sizes reveal different patterns?
-   - What might cause regions of elevated or reduced diversity?
-
 ### Deliverables
 
-Submit the following:
+Submit the following two files:
 
-1. **Your plot** (as a PDF or high-resolution PNG)
-2. **A brief methods section** describing:
-   - The window sizes you tested and why you chose them
-   - The VCFtools commands you used
-3. **Your analysis and interpretation** (1-2 paragraphs answering the questions above)
-4. **(Optional)** Your R script used to generate the plot
+1. **Your R script** - The complete R code used to:
+   - Load the VCFtools output files
+   - Create the plot
+   - Export the PNG file
+
+2. **Your plot** - A high-resolution PNG file showing:
+   - All window sizes in different colors
+   - Your preferred window size as a solid line
+   - Other window sizes as dashed lines
+   - A legend identifying window sizes by color
 
 ### Tips
 
@@ -633,15 +578,6 @@ Submit the following:
 - Consider using the window midpoint as the x-coordinate for plotting
 - Make sure your colors are distinguishable and colorblind-friendly
 - Test your R code on one file first before loading all of them
-
-### Evaluation Criteria
-
-Your work will be evaluated on:
-- **Completeness**: Did you test multiple appropriate window sizes?
-- **Visualization quality**: Is your plot clear, properly labeled, and easy to interpret?
-- **Analysis depth**: Do you thoughtfully address the questions about window size effects and biological interpretation?
-- **Scientific reasoning**: Do your conclusions follow logically from your observations?
-
----
+- Include comments in your R script explaining what each section does
 
 **End of Practical Exercise**
