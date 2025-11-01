@@ -1,0 +1,54 @@
+Populations, subpopulations, and demes
+
+Population: A group of freely interbreeding individuals. Note that this definition becomes a little tricker with organisms that reproduce asexually.
+Subpopulation: A population can be comprised of subpopulations which are much more likely to exchange genetic information internally than across subpopulations.
+Metapopulation: When a population contains may populations we tend to call it a metapopulation
+Population structure: Individuals between populations are more closely related to each other than individuals across populations
+
+Note that divergence requires time. Populations which are initially identical will diverge over time. Period immigration may cause the populations to become more similar in bursts, which then diverge over time again.
+
+Note that there is not hard boundary between what is 2 distinct populations that sometimes experience inter migration and what are 2 subpopulations in a metapopulation. You can often think of these are two extremes of a contiuum, but for the purposes of many models it is useful to think of subpopulations are real, discrete entities. There is no fixed threshold for determining if two groups of individuals are two populations.
+
+A clear example of a metapopulation would be a series of pools on a rocky island that seasonally fill up with rain water. The pools would be colonizes by small organisms each year and within the year would primarily exchange gene flow internally, but each pond would be populated from a general pool of genotypes shared between all the subpopulations.
+
+Populations will diverge in time due to mutation, selection, drift, and migration. But migration can act in two directions. If individuals are migrating into the two populations from different populations it will promote divergence, but it individuals are migrating between the two populations it redue their divergence.
+
+Note that selection can cause populations to evolve in different ways for example if a trait is favorable in one habitat but not in another habitat, but this will cause divergence only at the parts of the genome that are linked with this trait. Often in population genetics we are interested in genome wide signatures and so the effect of selection will typically have a negligible effect on genome wide differentiation. But regions of the genome which show more differentitation than the background can sometimes indicate areas of the genome that are under selection.
+
+## How to measure population divergence
+
+### The Wahlund effect
+Review of Hardy-Weinberg equlibirum
+What does it mean when HWE is violated? One possible cause is that structure exists in the population, such that the allele frequencies are different in different parts of the population. This means that global predictions of HWE are wrong, because the global allele frequencies don't really exist at the local level of the subpopulations. This is because population structure causes nonrandom mating. Even if the subpopulations are in HWE, the aggregate "population" can be far from HWE expecatations. The deviation in this scenario is always the same, there are fewer heterozygotes than would be expected, aka a deficit of heterozygotes. This is known as the **Wahlund Effect**	
+
+Example:
+Population 1 f(p) = 0.3 f(p2) = 0.09
+Population 2 f(p) = 0.8 f(p2) = 0.64
+Metapopulation f(p) = 0.55 f(p) 0.3
+
+So how many heterozygotes do we expect if we don't know about the metapopulation structure vs if we do?
+
+What is the maximum value that we could measure for this effect if two populations are fixed for alternate alleles?
+
+If we consider the variance of allele frequencies, then we can consider many subpopulations for our calculations
+
+### FST
+Explain the limitation of this allele variance calculation (variance scales differently depending on mean frequency)
+Why do we call it FST? It's part of the F statistics that measure variance between the Indiviual and Total FIT, Individual and Subpopulation FIS, and Subpopulation and Total FST. For this course we are only considered about FST. FST has some nice properites. It ranges from 0-1 with 0 meaning that there is no differentation and 1 meaning that different alleles are fixed in different populations, e.g. they could not be more diverged or they could not be less diverged. If you want to compare it to the Wahlund effect when FST is 0 there is no deficit of heterozygotes, but when it is 1 there are no heterozgyotes. You can also think of it as explaining how much of the genetic variance in a population is due to population structure with 1 meaning all of it.
+
+Note something that can be very confusing: FST is a theoretical concept which has been mathematically defined in many different ways. So do not be confused when you see multiple contradictory equations for the calculation of FST. This is why most software tools and documentats clearly state WHICH calculation is used for FST. These different measures exist because different needs, for example when performing unequal sampling of individuals between the two populations one calculation of FST might be more appropriate than another.
+
+Show that equation 5.4 collapses to equation 5.2 if the sample sizes are equal across subpopulations.
+
+Note that the variance for FST is expected to be large! It is the result of stochastic processes acting across the genome. Estimates of FST from a small number of markers are unreliable.
+
+Show that Nei came up with another measure called GST which works when loci are biallelic. You can know that it exists, but when working with genome scale data we often have the lucury to just filter out all markers that are not bi-allelic and make our life easier.
+
+Note that another useful measure is simply the number of private alleles found in each population, but this needs to be standardized so that sampling efforts are equal across the populations, and you probably want to exlcude really rare alleles from the analysis to avoid sequencing mistakes from overestimating how diverged samples are.
+
+### Effect of evolutionary processes on differentiation
+- Mutation will be negligible. It will introduce new variants but most will be lost to drift because they will start at low frequencies. Recurrent mutations which intrdocue the same allele indepedently into a population would cause divergence to be underestimated but thats a rare event and neglibile when working with most data.
+Selection, drift, and migration will have major impacts though.
+Regions under balancing selection will tend to resist divergence
+negative selection will tend to locally resist divergence at the genes under selection
+locally adapated selection with tend to promote divergence at the genes under selection

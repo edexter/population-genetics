@@ -1,0 +1,18 @@
+cat > settings/drift_only.ini << 'EOF'
+# General simulation settings
+generations             10000       # Number of generations CHANGE THIS!
+patch_capacity          100         # Population size CHANGE THIS!
+
+# Neutral marker configuration
+ntrl_loci               10          # Number of neutral loci
+ntrl_all                10          # Number of alleles per locus
+ntrl_ini_allele_model   0           # 0 = All loci start polymorphic, 1 = All loci started fixed,  
+ntrl_mutation_rate      0.00001     # Mutation rate
+
+# Statistics output
+stat             {n.adlt.nbAll_p1}  # Mean alleles/locus
+stat_log_time           1           # Record statistics every generation
+EOF
+
+# Output file naming
+filename                drift_only
